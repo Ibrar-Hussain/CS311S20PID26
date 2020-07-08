@@ -1,0 +1,70 @@
+Pseudocode:
+
+AB[]={2,5,8,9}  //frequency array
+RA[]={A,B,C,D}	//characters array
+//Let's suppose RA is sorted in increasing order of the frequency
+
+
+//For Tree
+parent,left,right,char=NULL
+for (i=0;i<length(AB);i++)  //let n be length(AB).       	O(n+1)
+	if parent==NULL       				 O(1)	||
+		parent=AB[0]+AB[1]			 O(n)	||
+		parent->left=AB[0]			 O(n)	||
+		parent->right=AB[1]			 O(n)	||
+		char[0]=RA[0]				 O(n)	||
+		char[1]=RA[1]					||
+	else:							||	O(n)
+		f1=AB.pop(i)				O(n)	||
+		f2=AB.pop(i+1)				O(n)	||
+		AB.push(f1+f2)				O(n)	||
+		temp=AB[i]+AB[i+1]			O(n)	||
+		if temp>parent && parent<AB[i+1]	O(n)	||
+			temp->left=parent		O(n)	||
+			temp->right=AB[i+1]		O(n)	||
+			parent=temp			O(n)	||
+			char=RA[i+2]			O(n)	||
+		else:						||
+			temp->right=parent		O(n)	||
+			temp->left=AB[i+1]		O(n)	||
+			parent=temp			O(n)	||
+			char=RA[i+2]			O(n)	||
+
+
+
+Total time complexity=O(n+1)+O(n)
+		     =O(n)+O(1)+O(n)
+		     =2'O(n)+O(1)
+		     = O(n)   answer
+------------------------------------------------------------------------
+//Now to code the character
+code=""
+for(i=0;i<length(RA);i++)   //let n be the length(RA)     O(n+1)
+	//while(n1!= j in freqofRA && n2!=j in freqofRA)   
+		temp=parent				|
+		n1=temp->left				|
+		n2=temp->right				|
+		if(n1->left&&right==NULL)		|
+			code+="0"			|
+		elseif(n2->left&&right==NULL)		|
+			code+="1"			|
+		if(n2>n1&&n2->left&&right!=NULL)	|	O(n)
+`			parent=n2			|
+`			code--				|
+			code+="1"			|
+		else					|
+			parent=n1			|	
+			code--				|
+			code+="0"			|
+	if(n1->left&&right==NULL and n2->left&&right==NULL)
+		if(n1==freqofRA[0])			|
+			code+="0"			|
+		elseif n2==freqofRA[1]			|
+			code+="1"			|
+
+
+
+Total time complexity=O(n+1)+O(n)
+		     =O(n)+O(1)+O(n)
+		     =2'O(n)+O(1)
+		     = O(n)   answer
