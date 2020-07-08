@@ -1,0 +1,24 @@
+Statement:Suppose we have an optimal solution for n=2.There should be the optimal solution on values grater than 2 which extend the depth of the tree.where n is the number of characters or symbols in array
+
+Inductive hypothesis:
+In this we assume that the the algrithm solves smaller problems optimally and also for the bigger ones it  is optimal.i.e there also exist optimal solution after n=2 e.g for n=4 etc.
+Base case: 
+When n=2 ,this algorithm gives optimal tree. i.e 1bit per symbol or character.
+Inductive step:
+let's assume that the input size is greater than 2  n>2.
+
+Let T'=T with 2 symbols a and b which are replaced by c which is equal to a+b. a,b are siblings. so the new tree is T'.
+ for T and T'(T is the tree with base case and T' is tree correspond to the leaves a,b etc
+Let f.a anf f.b be the frequency of the characters in array.
+So, f.a[depth of a in T]
+f.b[depth of b in T]      //a and b are one step below in T'
+f.ab[depth of ab in T']=f.a+f.b
+let d be the depth.
+L(T)-L(T')
+=f.a(d+1)+f.b(d+1)-(f.a+f.b).d
+=f.a.d+f.a+f.b.d+f.b-f.a.d-f.b.d
+=f.a+f.b
+conclusion:
+so at the end of the tree the leave nodes are present  with the frequencies of the character and gives the optimal solution as in our base case.
+At the end the result is optimal for n greater than 2. 
+
