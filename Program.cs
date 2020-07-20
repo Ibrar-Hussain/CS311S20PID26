@@ -2,189 +2,372 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.IO;
 namespace ConsoleApp2
 {
-    internal class Stack
+
+    public unsafe class Node
     {
-        static readonly int MAX = 1000;
-        int top;
-        int[] stack = new int[MAX];
+        public char Character { get; set; }
+        public int Frequency { get; set; }
+        public Node left;
+        public Node right;
+        // public Node Parent;
+    }
+    public unsafe class Tree
+    {
+        public Node root;
+        public Tree()
+        {
 
-        bool IsEmpty()
-        {
-            return (top < 0);
-        }
-        public Stack()
-        {
-            top = -1;
-        }
-        internal bool Push(int data)
-        {
-            if (top >= MAX)
-            {
-                Console.WriteLine("Stack Overflow");
-                return false;
-            }
-            else
-            {
-                stack[++top] = data;
-                return true;
-            }
-        }
+            root = null;
+            root.left = null;
+            root.right = null;
+            // root.Parent = null;
 
-        internal int Pop()
-        {
-            if (top < 0)
-            {
-                Console.WriteLine("Stack Underflow");
-                return 0;
-            }
-            else
-            {
-                int value = stack[top--];
-                return value;
-            }
-        }
-        public unsafe class Node
-        {
-            public char Character { get; set; }
-            public int Frequency { get; set; }
-            public Node left;
-            public Node right;
-            public Node Parent;
-        }
-        public unsafe class Tree
-        {
-            public Node root;
-            public Tree()
-            {
 
-                root = null;
-                root.left = null;
-                root.right = null;
-                root.Parent = null;
-
-            }
         }
-        class Class1
+    }
+    class Class1
+    {
+        public static void Huffman_Tree(int[] Frequency, char[] Character)
         {
-            public static void Huffman_Tree(int[] Frequency, char[] Character)
-            {
-                Node node_HT = new Node();
 
-                Stack for_freq = new Stack();
-                Stack for_ch = new Stack();
-                for (int i = 0; i < Frequency.Length; i++)
+            Node n1 = new Node();
+            Node parent;
+            parent = n1;
+            parent.Frequency = 0;
+            parent.left = null; parent.right = null;
+            for (int i = 0; i < Frequency.Length; i++)
+            {
+                if (parent.Frequency == 0)
                 {
-                    for_freq.Push(i);
-                    for_ch.Push(i);
+                    Node n2 = new Node();
+                    Node n3 = new Node();
+                    n2.Frequency = Frequency[0]; n2.Character = Character[0];
+                    n3.Frequency = Frequency[1]; n3.Character = Character[1];
+                    parent.Frequency = n2.Frequency + n3.Frequency;
+                    parent.right = n3;
+                    parent.left = n2;
+                    i++;
                 }
-                Node node1 = new Node();
-                Node node2 = new Node();
-                Node node3 = new Node();
-
-                for (int j = 0; j < Frequency.Length; j++)
+                else
                 {
 
-
-
-                    if (node_HT == null)
+                    Node temp = new Node();
+                    temp.Frequency = Frequency[i] + parent.Frequency;
+                    temp.Character = '\0';
+                    if (temp.Frequency > parent.Frequency && parent.Frequency < Frequency[i])
                     {
-
-                        node1.Frequency = Frequency[j] + Frequency[j + 1];
-                        node2.Frequency = Frequency[j];
-                        node3.Frequency = Frequency[j + 1];
-                        node1.right = node2;
-                        node1.left = node3;
-                        node_HT = node1;
+                        Node next = new Node(); next.Frequency = Frequency[i]; next.Character = Character[i];
+                        temp.left = parent;
+                        temp.right = next;
+                        parent = temp;
                     }
                     else
                     {
+                        Node next = new Node(); next.Frequency = Frequency[i]; next.Character = Character[i];
+                        temp.right = parent;
+                        temp.left = next;
+                        parent = temp;
+                    }
 
-                        int f1 = 0;
-                        int f2 = 0;
-                        Stack<int> fq = new Stack<int>();
-                        f1 = for_freq.Pop();
-                        f2 = for_freq.Pop();
-                        Console.WriteLine(f1);
-                        fq.Push(f1 + f2);
-                        Node temp = new Node();
-                        int sum = Frequency[j] + Frequency[j + 1];
-                        if (sum > node1.Parent.Frequency && node1.Parent.Frequency < Frequency[j + 1])
+                }
+            }
+            string Code = "",
+            Code1 = "",
+            Code2 = "";
+            string[] Code_arr = new string[Character.Length];
+            int counter = 0;
+            bool Flag = false;
+            Node n4, n5;
+            Node Temp = parent;
+            n4 = Temp.left;
+            n5 = Temp.right;
+            Code2 = "1";
+            while ((n5.left != null && n5.right != null))
+            {
+
+                if (Flag == false && n4.left == null && n4.right == null)
+                {
+                    Code1 += "0";
+                    if (n4.left == null && n4.right == null)
+                    {
+                        Code += Code1 + "," + Convert.ToString(n4.Frequency) + "," + n4.Character + "\n";
+                        Code_arr[counter++] = Code;
+                        Code = "";
+                        Flag = true;
+                        //Code = "";
+
+                    }
+                }
+                if (Flag == true && n5.left != null && n5.right != null)
+                {
+                    Code1 = Code2;
+                    n4 = n5;
+                    n5 = n5.right;
+                    // n4 = n5;
+                    Code1 += "1";
+                    Code2 = Code1;
+                    if (n4.left != null)
+                    {
+                        Flag = false;
+                        n4 = n4.left;
+                    }
+                }
+                if (n5.left == null && n5.right == null)
+                {
+                    Code += Code2 + "," + Convert.ToString(n5.Frequency) + "," + n5.Character + "\n";
+                    Code_arr[counter++] = Code;
+                    Code = "";
+                    // break;
+                }
+            }
+            if (n4.left == null && n4.right == null)
+            {
+                Code += Code1 + "," + Convert.ToString(n4.Frequency) + "," + n4.Character + "\n";
+                Code_arr[counter++] = Code;
+                Code = "";
+            }
+            File.WriteAllText("CSF.txt", "");
+            for (int j = 0; j < Code_arr.Length; j++)
+            {
+                File.AppendAllText("CSF.txt", Code_arr[j]);
+            }
+            Encode();
+        }
+        public static void sort_in_order(int[] freq, char[] ch)
+        {
+            int n = freq.Length;
+
+            // One by one move boundary of unsorted subarray
+            for (int i = 0; i < n - 1; i++)
+            {
+                // Find the minimum element in unsorted array
+                int min_idx = i;
+                int ch_idx = i;
+                for (int j = i + 1; j < n; j++)
+                    if (freq[j] < freq[min_idx])
+                    {
+                        min_idx = j;
+                        ch_idx = j;
+                    }
+
+
+                // Swap the found minimum element with the first
+                // element
+                int temp1 = freq[min_idx];
+                char temp2 = ch[min_idx];
+                freq[min_idx] = freq[i];
+                ch[min_idx] = ch[i];
+                freq[i] = temp1;
+                ch[i] = temp2;
+
+            }
+            //Console.ReadLine();
+
+        }
+        public static void Encode()
+        {
+            string R = "", Line = "";
+            string s = File.ReadAllText("aoa.txt");
+            string[] c = File.ReadAllLines("CSF.txt");
+            File.WriteAllText("CF.txt", "");
+            foreach (char chara in s)
+            {
+                for (int i = 0; i < c.Length; i++)
+                {
+                    //int l = 0;
+                    if (c[i].Length == 0)
+                    {
+                        continue;
+                    }
+                    else if (c[i].Length > 1)
+                    {
+                        Line = c[i];
+                        if (Char.Equals(Line[Line.Length - 1], chara) == true)
                         {
-                            temp.left = node1.Parent;
-                            temp.right = node1;
-                            node1.Parent = temp;
-                            char chara = Character[j + 1];
-
+                            int j = 0;
+                            while (Line[j] != ',')
+                            {
+                                R += Line[j];
+                                j++;
+                            }
+                            break;
                         }
-                        else
-                        {
-                            temp.right = node1.Parent;
-                            temp.left = node1;
-                            node1.Parent = temp;
-                            char chara = Character[j + 1];
+                    }
 
+                }
+                File.AppendAllText("CF.txt", R);
+                R = "";
+
+            }
+
+        }
+        public static void Decompress()
+        {
+            Node LeafNode = new Node();
+            string[] m = File.ReadAllLines("CSF.txt");
+            string d = File.ReadAllText("CF.txt");
+            int[] Frequency = new int[m.Length - 1];
+            char[] Character = new char[m.Length - 1];
+            int a = 0;
+            string f = "";
+            int k = 0;
+            bool flag = false;
+            for (int j = 0; j < m.Length - 1; j++)
+            {
+                k = 0;
+               if (m[j].Length > 1)
+                {
+                    if (m[j][m[j].Length - 1] == ',' && m[j][m[j].Length - 2] != ',')
+                        Character[a] = '\n';
+                    else
+                    {
+                        Character[a] = (m[j][m[j].Length-1]);
+                    }
+
+                    while (k < m[j].Length || flag)
+                    {
+                        if (m[j][k] == ',' && flag == false)
+                        {
+                            flag = true;
+                        }
+                        k++;
+
+                        if (flag)
+                        {
+
+                            f += m[j][k];
+
+                            if (m[j][k + 1] == ',' && flag == true)
+                            {
+                                flag = false;
+
+                                break;
+                            }
                         }
 
                     }
 
+                    Int32.TryParse(f, out Frequency[a++]);
+                    f = "";
 
                 }
-
             }
-            public static void sort_in_reverse(int[] freq, char[] ch)
+
+            sort_in_order(Frequency, Character);
+
+            Node n1 = new Node();
+            Node parent;
+            parent = n1;
+            parent.Frequency = 0;
+            parent.left = null; parent.right = null;
+            for (int i = 2; i < Frequency.Length; i++)
             {
-                int n = freq.Length;
-
-                // One by one move boundary of unsorted subarray
-                for (int i = n - 1; i > 0; i--)
+                if (parent.Frequency == 0)
                 {
-                    // Find the minimum element in unsorted array
-                    int max_idx = i;
-                    int ch_idx = i;
-                    for (int j = i - 1; j >= 0; j--)
-                        if (freq[j] < freq[max_idx])
-                        {
-                            max_idx = j;
-                            ch_idx = j;
-                        }
+                    Node n2 = new Node();
+                    Node n3 = new Node();
+                    n2.Frequency = Frequency[2]; n2.Character = Character[2];
+                    n3.Frequency = Frequency[3]; n3.Character = Character[3];
+                    parent.Frequency = n2.Frequency + n3.Frequency;
+                    parent.right = n3;
+                    parent.left = n2;
+                    i++;
+                }
+                else
+                {
 
-
-                    // Swap the found minimum element with the first
-                    // element
-                    int temp1 = freq[max_idx];
-                    char temp2 = ch[max_idx];
-                    freq[max_idx] = freq[i];
-                    ch[max_idx] = ch[i];
-                    freq[i] = temp1;
-                    ch[i] = temp2;
+                    Node temp = new Node();
+                    temp.Frequency = Frequency[i] + parent.Frequency;
+                    temp.Character = '\0';
+                    if (temp.Frequency > parent.Frequency && parent.Frequency < Frequency[i])
+                    {
+                        Node next = new Node(); next.Frequency = Frequency[i]; next.Character = Character[i];
+                        temp.left = parent;
+                        temp.right = next;
+                        parent = temp;
+                    }
+                    else
+                    {
+                        Node next = new Node(); next.Frequency = Frequency[i]; next.Character = Character[i];
+                        temp.right = parent;
+                        temp.left = next;
+                        parent = temp;
+                    }
 
                 }
-                //Console.ReadLine();
-
             }
+            string T = "";
+            Node Root = new Node();
+            Node tptr = parent;
+            Node temp1 = new Node();
+            string F = File.ReadAllText("CF.txt");
+            var b = File.Create("Decode.txt");
+            b.Close();
 
-
-            static void Main(string[] args)
+            foreach (char c in F)
             {
-                int[] freq = { 1, 2, 3, 4, 5 };
-                char[] ch = { 'a', 'b', 'c', 'd', 'e' };
-                sort_in_reverse(freq, ch);
-                for (int i = 0; i < freq.Length; i++)
+                if (c == '1')
                 {
-                    Console.Write(freq[i]);
+                    tptr = tptr.right;
                 }
-                Console.WriteLine();
-                for (int i = 0; i < ch.Length; i++)
+                else
                 {
-                    Console.Write(ch[i]);
+                    tptr = tptr.left;
                 }
-
-                Huffman_Tree(freq, ch);
-                Console.ReadLine();
+                if (tptr.left == null)
+                {
+                    T += tptr.Character.ToString();
+                    tptr = parent;
+                }
             }
+            File.WriteAllText("Decode.txt", T);
         }
 
+        static void Main(string[] args)
+        {
+
+            // Array to store frequencies.
+            int[] c = new int[(int)char.MaxValue];
+
+            // Read entire text file.
+            string s = File.ReadAllText("aoa.txt");
+            // Iterate over each character.
+            int length = 0;
+            foreach (char t in s)
+            {
+                // Increment table.
+                if (c[(int)t] == '\0')
+                    length++;
+                c[(int)t]++;
+            }
+
+            int[] freq = new int[length];
+            char[] ch = new char[length];
+
+            int k = 0;
+            // Write all letters found.
+            for (int i = 0; i < (int)char.MaxValue; i++)
+            {
+                if (c[i] > 0)
+                {
+                    ch[k] = (char)i;
+                    freq[k++] = c[i];
+                }
+            }
+
+            sort_in_order(freq, ch);
+
+            Huffman_Tree(freq, ch);
+            Encode();
+            Decompress();
+
+            Console.WriteLine("Press any key to exit......");
+            Console.ReadLine();
+        }
     }
+
 }
