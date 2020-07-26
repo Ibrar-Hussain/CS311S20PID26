@@ -108,28 +108,34 @@ namespace ConsoleApp2
                     n4 = n5;
                     n5 = n5.right;
                     // n4 = n5;
-                    Code1 += "1";
+                    // Code1 += "1";
+
                     Code2 = Code1;
+                    Code2 += "1";
                     if (n4.left != null)
                     {
                         Flag = false;
                         n4 = n4.left;
                     }
                 }
+                if (n4.left == null && n4.right == null && n5.left == null && n5.right == null)
+                {
+                    Code1 += "0";
+                    Code += Code1 + "," + Convert.ToString(n4.Frequency) + "," + n4.Character + "\n";
+                    Code_arr[counter++] = Code;
+                    Code = "";
+                    Flag = true;
+                }
                 if (n5.left == null && n5.right == null)
                 {
+                    Code2 += "1";
                     Code += Code2 + "," + Convert.ToString(n5.Frequency) + "," + n5.Character + "\n";
                     Code_arr[counter++] = Code;
                     Code = "";
                     // break;
                 }
             }
-            if (n4.left == null && n4.right == null)
-            {
-                Code += Code1 + "," + Convert.ToString(n4.Frequency) + "," + n4.Character + "\n";
-                Code_arr[counter++] = Code;
-                Code = "";
-            }
+
             File.WriteAllText("CSF.txt", "");
             for (int j = 0; j < Code_arr.Length; j++)
             {
@@ -171,7 +177,7 @@ namespace ConsoleApp2
         public static void Encode()
         {
             string R = "", Line = "";
-            string s = File.ReadAllText("aoa.txt");
+            string s = File.ReadAllText("test.txt");
             string[] c = File.ReadAllLines("CSF.txt");
             File.WriteAllText("CF.txt", "");
             foreach (char chara in s)
@@ -210,22 +216,22 @@ namespace ConsoleApp2
             Node LeafNode = new Node();
             string[] m = File.ReadAllLines("CSF.txt");
             string d = File.ReadAllText("CF.txt");
-            int[] Frequency = new int[m.Length - 1];
-            char[] Character = new char[m.Length - 1];
+            int[] Frequency = new int[m.Length];
+            char[] Character = new char[m.Length];
             int a = 0;
             string f = "";
             int k = 0;
             bool flag = false;
-            for (int j = 0; j < m.Length - 1; j++)
+            for (int j = 0; j < m.Length; j++)
             {
                 k = 0;
-               if (m[j].Length > 1)
+                if (m[j].Length > 1)
                 {
                     if (m[j][m[j].Length - 1] == ',' && m[j][m[j].Length - 2] != ',')
                         Character[a] = '\n';
                     else
                     {
-                        Character[a] = (m[j][m[j].Length-1]);
+                        Character[a] = (m[j][m[j].Length - 1]);
                     }
 
                     while (k < m[j].Length || flag)
@@ -255,23 +261,33 @@ namespace ConsoleApp2
                     f = "";
 
                 }
+
             }
 
-            sort_in_order(Frequency, Character);
+            Array.Reverse(Character);
+            Array.Reverse(Frequency);
+            // sort_in_order(Frequency, Character);
+            char tempc = Character[0];
+            Character[0] = Character[1];
+            Character[1] = tempc;
 
+            int tempf = Frequency[0];
+            Frequency[0] = Frequency[1];
+            Frequency[1] = tempf;
+            /*-------------------------------------- */
             Node n1 = new Node();
             Node parent;
             parent = n1;
             parent.Frequency = 0;
             parent.left = null; parent.right = null;
-            for (int i = 2; i < Frequency.Length; i++)
+            for (int i = 0; i < Frequency.Length; i++)
             {
                 if (parent.Frequency == 0)
                 {
                     Node n2 = new Node();
                     Node n3 = new Node();
-                    n2.Frequency = Frequency[2]; n2.Character = Character[2];
-                    n3.Frequency = Frequency[3]; n3.Character = Character[3];
+                    n2.Frequency = Frequency[0]; n2.Character = Character[0];
+                    n3.Frequency = Frequency[1]; n3.Character = Character[1];
                     parent.Frequency = n2.Frequency + n3.Frequency;
                     parent.right = n3;
                     parent.left = n2;
@@ -300,6 +316,7 @@ namespace ConsoleApp2
 
                 }
             }
+            
             string T = "";
             Node Root = new Node();
             Node tptr = parent;
@@ -334,7 +351,7 @@ namespace ConsoleApp2
             int[] c = new int[(int)char.MaxValue];
 
             // Read entire text file.
-            string s = File.ReadAllText("aoa.txt");
+            string s = File.ReadAllText("test.txt");
             // Iterate over each character.
             int length = 0;
             foreach (char t in s)
@@ -362,7 +379,7 @@ namespace ConsoleApp2
             sort_in_order(freq, ch);
 
             Huffman_Tree(freq, ch);
-            Encode();
+            // Encode();
             Decompress();
 
             Console.WriteLine("Press any key to exit......");
