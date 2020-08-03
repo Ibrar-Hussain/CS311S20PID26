@@ -6,7 +6,6 @@ using System.Text;
 using System.IO;
 namespace ConsoleApp2
 {
-
     public unsafe class Node
     {
         public char Character { get; set; }
@@ -20,65 +19,67 @@ namespace ConsoleApp2
         public Node root;
         public Tree()
         {
-
             root = null;
             root.left = null;
             root.right = null;
             // root.Parent = null;
 
-
         }
     }
     class Class1
     {
-        public static void Huffman_Tree(int[] Frequency, char[] Character)
+        public static void H_Tree(int[] Frequency, char[] Character)
         {
-
             Node n1 = new Node();
-            Node parent;
+            Node parent;   //pointer
             parent = n1;
             parent.Frequency = 0;
-            parent.left = null; parent.right = null;
+            parent.left = null;
+            parent.right = null;
             for (int i = 0; i < Frequency.Length; i++)
             {
                 if (parent.Frequency == 0)
                 {
                     Node n2 = new Node();
                     Node n3 = new Node();
-                    n2.Frequency = Frequency[0]; n2.Character = Character[0];
-                    n3.Frequency = Frequency[1]; n3.Character = Character[1];
+                    n2.Frequency = Frequency[0];
+                    n2.Character = Character[0];
+                    n3.Frequency = Frequency[1];
+                    n3.Character = Character[1];
                     parent.Frequency = n2.Frequency + n3.Frequency;
-                    parent.right = n3;
-                    parent.left = n2;
+                    parent.right = n2;
+                    parent.left = n3;
                     i++;
                 }
                 else
                 {
-
                     Node temp = new Node();
                     temp.Frequency = Frequency[i] + parent.Frequency;
                     temp.Character = '\0';
-                    if (temp.Frequency > parent.Frequency && parent.Frequency < Frequency[i])
+                    if (parent.Frequency < Frequency[i])
                     {
-                        Node next = new Node(); next.Frequency = Frequency[i]; next.Character = Character[i];
-                        temp.left = parent;
-                        temp.right = next;
+                        Node next = new Node();  //store  frequency and character from array
+                        next.Frequency = Frequency[i];
+                        next.Character = Character[i];
+                        temp.left = next;
+                        temp.right = parent;
                         parent = temp;
                     }
                     else
                     {
-                        Node next = new Node(); next.Frequency = Frequency[i]; next.Character = Character[i];
+                        Node next = new Node();
+                        next.Frequency = Frequency[i];
+                        next.Character = Character[i];
                         temp.right = parent;
                         temp.left = next;
                         parent = temp;
                     }
-
                 }
             }
             string Code = "",
             Code1 = "",
             Code2 = "";
-            string[] Code_arr = new string[Character.Length];
+            string[] Code_arr = new string[Character.Length];  //dymaic array
             int counter = 0;
             bool Flag = false;
             Node n4, n5;
@@ -86,9 +87,8 @@ namespace ConsoleApp2
             n4 = Temp.left;
             n5 = Temp.right;
             Code2 = "1";
-            while ((n5.left != null && n5.right != null))
+            while ((n5.left != null && n5.right != null))    //leaf node
             {
-
                 if (Flag == false && n4.left == null && n4.right == null)
                 {
                     Code1 += "0";
@@ -98,8 +98,7 @@ namespace ConsoleApp2
                         Code_arr[counter++] = Code;
                         Code = "";
                         Flag = true;
-                        //Code = "";
-
+                        Code = "";
                     }
                 }
                 if (Flag == true && n5.left != null && n5.right != null)
@@ -109,7 +108,6 @@ namespace ConsoleApp2
                     n5 = n5.right;
                     // n4 = n5;
                     // Code1 += "1";
-
                     Code2 = Code1;
                     Code2 += "1";
                     if (n4.left != null)
@@ -118,7 +116,7 @@ namespace ConsoleApp2
                         n4 = n4.left;
                     }
                 }
-                if (n4.left == null && n4.right == null && n5.left == null && n5.right == null)
+                if (n4.left == null && n4.right == null && n5.left == null && n5.right == null) //left leaf node
                 {
                     Code1 += "0";
                     Code += Code1 + "," + Convert.ToString(n4.Frequency) + "," + n4.Character + "\n";
@@ -126,17 +124,15 @@ namespace ConsoleApp2
                     Code = "";
                     Flag = true;
                 }
-                if (n5.left == null && n5.right == null)
+                if (n5.left == null && n5.right == null)   //right leaf node
                 {
-                    Code2 += "1";
-                    Code += Code2 + "," + Convert.ToString(n5.Frequency) + "," + n5.Character + "\n";
+                    //Code2 += "1";
+                    Code += Code2 + "," + Convert.ToString(n5.Frequency) + "," + n5.Character;
                     Code_arr[counter++] = Code;
                     Code = "";
-                    // break;
                 }
             }
-
-            File.WriteAllText("CSF.txt", "");
+            File.WriteAllText("CSF.txt", "");    // file null
             for (int j = 0; j < Code_arr.Length; j++)
             {
                 File.AppendAllText("CSF.txt", Code_arr[j]);
@@ -146,7 +142,6 @@ namespace ConsoleApp2
         public static void sort_in_order(int[] freq, char[] ch)
         {
             int n = freq.Length;
-
             // One by one move boundary of unsorted subarray
             for (int i = 0; i < n - 1; i++)
             {
@@ -160,7 +155,6 @@ namespace ConsoleApp2
                         ch_idx = j;
                     }
 
-
                 // Swap the found minimum element with the first
                 // element
                 int temp1 = freq[min_idx];
@@ -169,10 +163,8 @@ namespace ConsoleApp2
                 ch[min_idx] = ch[i];
                 freq[i] = temp1;
                 ch[i] = temp2;
-
             }
             //Console.ReadLine();
-
         }
         public static void Encode()
         {
@@ -184,32 +176,53 @@ namespace ConsoleApp2
             {
                 for (int i = 0; i < c.Length; i++)
                 {
-                    //int l = 0;
-                    if (c[i].Length == 0)
+                    if (c[i].Length == 0 && chara == '\n')
                     {
-                        continue;
+                        int j = 0;
+                        Line = c[i - 1];
+                        while (Line[j] != ',')
+                        {
+                            R += Line[j];
+                            j++;
+                        }
+                        break;
                     }
                     else if (c[i].Length > 1)
                     {
                         Line = c[i];
-                        if (Char.Equals(Line[Line.Length - 1], chara) == true)
+                        if (Char.Equals(Line[Line.Length - 1], chara) == true)   //char.equals= to compare two charcters
                         {
-                            int j = 0;
-                            while (Line[j] != ',')
+                            if (Char.Equals(Line[Line.Length - 1], chara) && Line[Line.Length - 2] == ',')
                             {
-                                R += Line[j];
-                                j++;
+                                int j = 0;
+                                while (Line[j] != ',')
+                                {
+                                    R += Line[j];
+                                    j++;
+                                }
+                                break;
                             }
-                            break;
+                            else if (Char.Equals(Line[Line.Length - 1], chara) && Line[Line.Length - 2] != ',')
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                int j = 0;
+                                while (Line[j] != ',')
+                                {
+                                    R += Line[j];
+                                    j++;
+                                }
+                                break;
+                            }
                         }
                     }
 
                 }
                 File.AppendAllText("CF.txt", R);
                 R = "";
-
             }
-
         }
         public static void Decompress()
         {
@@ -225,85 +238,121 @@ namespace ConsoleApp2
             for (int j = 0; j < m.Length; j++)
             {
                 k = 0;
-                if (m[j].Length > 1)
+                if (m[j].Length == 0)
                 {
-                    if (m[j][m[j].Length - 1] == ',' && m[j][m[j].Length - 2] != ',')
-                        Character[a] = '\n';
-                    else
+                    Character[a] = '\n';
+                    while (k < m[j - 1].Length || flag)
                     {
-                        Character[a] = (m[j][m[j].Length - 1]);
-                    }
-
-                    while (k < m[j].Length || flag)
-                    {
-                        if (m[j][k] == ',' && flag == false)
+                        if (m[j - 1][k] == ',' && flag == false)
                         {
                             flag = true;
                         }
                         k++;
-
                         if (flag)
                         {
-
-                            f += m[j][k];
-
-                            if (m[j][k + 1] == ',' && flag == true)
+                            f += m[j - 1][k];
+                            if (m[j - 1][k + 1] == ',' && flag == true)
                             {
                                 flag = false;
-
                                 break;
                             }
                         }
-
                     }
-
+                    Int32.TryParse(f, out Frequency[a++]);
+                    Character[a] = '\r';
                     Int32.TryParse(f, out Frequency[a++]);
                     f = "";
-
                 }
-
+                else if (m[j].Length > 1)
+                {
+                    if (m[j][m[j].Length - 1] == ',' && m[j][m[j].Length - 2] != ',')
+                        continue;
+                    else
+                    {
+                        Character[a] = (m[j][m[j].Length - 1]);
+                        while (k < m[j].Length || flag)
+                        {
+                            if (m[j][k] == ',' && flag == false)
+                            {
+                                flag = true;
+                            }
+                            k++;
+                            if (flag)
+                            {
+                                f += m[j][k];
+                                if (m[j][k + 1] == ',' && flag == true)
+                                {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                        }
+                        Int32.TryParse(f, out Frequency[a++]);
+                        f = "";
+                    }
+                }
             }
 
             Array.Reverse(Character);
             Array.Reverse(Frequency);
-            // sort_in_order(Frequency, Character);
-            char tempc = Character[0];
-            Character[0] = Character[1];
-            Character[1] = tempc;
+            bool is_null = false;
+            if (Character[0] == '\0')
+                is_null = true;
 
-            int tempf = Frequency[0];
-            Frequency[0] = Frequency[1];
-            Frequency[1] = tempf;
-            /*-------------------------------------- */
+            /*     if (!is_null)
+                 {
+             char tempc = Character[1];
+             Character[1] = Character[2];
+         Character[2] = tempc;
+         int tempf = Frequency[1];
+         Frequency[1] = Frequency[2];
+         Frequency[2] = tempf;
+     }
+                 else
+                 {
+                     char tempc = Character[1];
+                     Character[1] = Character[2];
+                     Character[2] = tempc;
+                     int tempf = Frequency[1];
+                     Frequency[1] = Frequency[2];
+                     Frequency[2] = tempf;
+                 }
+                 /*-------------------------------------- */
             Node n1 = new Node();
             Node parent;
             parent = n1;
             parent.Frequency = 0;
             parent.left = null; parent.right = null;
-            for (int i = 0; i < Frequency.Length; i++)
+            int i;
+            if (is_null)
+                i = 1;
+            else
+                i = 0;
+            for (; i < Frequency.Length; i++)
             {
                 if (parent.Frequency == 0)
                 {
                     Node n2 = new Node();
                     Node n3 = new Node();
-                    n2.Frequency = Frequency[0]; n2.Character = Character[0];
-                    n3.Frequency = Frequency[1]; n3.Character = Character[1];
+                    n2.Frequency = Frequency[i];
+                    n2.Character = Character[i];
+                    n3.Frequency = Frequency[i + 1];
+                    n3.Character = Character[i + 1];
                     parent.Frequency = n2.Frequency + n3.Frequency;
-                    parent.right = n3;
-                    parent.left = n2;
+                    parent.right = n2;
+                    parent.left = n3;
                     i++;
                 }
                 else
                 {
-
                     Node temp = new Node();
                     temp.Frequency = Frequency[i] + parent.Frequency;
                     temp.Character = '\0';
-                    if (temp.Frequency > parent.Frequency && parent.Frequency < Frequency[i])
+                    if (parent.Frequency < Frequency[i])
                     {
                         Node next = new Node(); next.Frequency = Frequency[i]; next.Character = Character[i];
-                        temp.left = parent;
-                        temp.right = next;
+                        temp.left = next;
+                        temp.right = parent;
                         parent = temp;
                     }
                     else
@@ -313,10 +362,8 @@ namespace ConsoleApp2
                         temp.left = next;
                         parent = temp;
                     }
-
                 }
             }
-            
             string T = "";
             Node Root = new Node();
             Node tptr = parent;
@@ -324,34 +371,41 @@ namespace ConsoleApp2
             string F = File.ReadAllText("CF.txt");
             var b = File.Create("Decode.txt");
             b.Close();
-
             foreach (char c in F)
             {
                 if (c == '1')
                 {
                     tptr = tptr.right;
+                    if (tptr.left == null && tptr.right == null)
+                    {
+                        /*if (tptr.Character == ',')
+                            T += tptr.Character.ToString();*/
+                        T += tptr.Character.ToString();
+                        tptr = parent;
+                    }
                 }
                 else
                 {
                     tptr = tptr.left;
+                    if (tptr.left == null && tptr.right == null)
+                    {
+                        T += tptr.Character.ToString();
+                        tptr = parent;
+                    }
                 }
-                if (tptr.left == null)
-                {
-                    T += tptr.Character.ToString();
-                    tptr = parent;
-                }
+
             }
             File.WriteAllText("Decode.txt", T);
         }
-
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
 
             // Array to store frequencies.
             int[] c = new int[(int)char.MaxValue];
-
             // Read entire text file.
             string s = File.ReadAllText("test.txt");
+            if (!(s.Length > 2))
+                return -1;
             // Iterate over each character.
             int length = 0;
             foreach (char t in s)
@@ -361,10 +415,8 @@ namespace ConsoleApp2
                     length++;
                 c[(int)t]++;
             }
-
             int[] freq = new int[length];
             char[] ch = new char[length];
-
             int k = 0;
             // Write all letters found.
             for (int i = 0; i < (int)char.MaxValue; i++)
@@ -377,14 +429,12 @@ namespace ConsoleApp2
             }
 
             sort_in_order(freq, ch);
-
-            Huffman_Tree(freq, ch);
+            H_Tree(freq, ch);
             // Encode();
             Decompress();
-
             Console.WriteLine("Press any key to exit......");
             Console.ReadLine();
+            return 0;
         }
     }
-
 }
