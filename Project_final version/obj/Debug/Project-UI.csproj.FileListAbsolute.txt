@@ -1,0 +1,12 @@
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\bin\Debug\Project-UI.exe.config
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\bin\Debug\Project-UI.exe
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\bin\Debug\Project-UI.pdb
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\obj\Debug\Project-UI.csprojAssemblyReference.cache
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\obj\Debug\Project_UI.Form1.resources
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\obj\Debug\Project_UI.Properties.Resources.resources
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\obj\Debug\Project-UI.csproj.GenerateResource.cache
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\obj\Debug\Project-UI.exe
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\obj\Debug\Project-UI.pdb
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\obj\Debug\Project_UI.Form2.resources
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\obj\Debug\Project_UI.Form3.resources
+C:\Users\ABRAR\OneDrive\Desktop\Project-UI\obj\Debug\Project_UI.Form4.resources
