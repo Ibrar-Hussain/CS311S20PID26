@@ -82,7 +82,7 @@ namespace Project_UI
             {
                 if ((File.Exists(txtFileName.Text))&&(File.Exists(textBox1.Text)))
                 {
-                    string emp=File.ReadAllText("Decode.txt");
+                    string emp=File.ReadAllText("C:\\Users\\Public\\Documents\\Decode.txt");
                     try
                     {
                     Project_UI.Class1.End(txtFileName.Text,textBox1.Text);
