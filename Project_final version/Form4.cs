@@ -92,7 +92,7 @@ namespace Project_UI
                     catch (System.IndexOutOfRangeException)  
                     {
                         MessageBox.Show("Files seemed to be different");
-                        throw new System.ArgumentOutOfRangeException("input files are not correct.");
+                        //throw new System.ArgumentOutOfRangeException("input files are not correct.");
                     }
                 }
                 else
