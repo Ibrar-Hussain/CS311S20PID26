@@ -66,7 +66,8 @@ namespace Project_UI
                 if (File.Exists(txtFileName.Text))
                 {
                 Project_UI.Class1.Start(txtFileName.Text);
-                MessageBox.Show("File Compressed Successfully!");    
+                MessageBox.Show("File Compressed Successfully! " +
+                    "Path:C:\\User:\\Public:\\Documents");    
                 }
                 else
                 {
