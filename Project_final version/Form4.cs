@@ -87,7 +87,8 @@ namespace Project_UI
                     Project_UI.Class1.End(txtFileName.Text,textBox1.Text);
                     string emp=File.ReadAllText("C:\\Users\\Public\\Documents\\Decode.txt");
                     if (string.IsNullOrWhiteSpace(emp)) MessageBox.Show("Files seemed to be different!");
-                    else MessageBox.Show("File Decompressed Successfully!");
+                    else MessageBox.Show("File Compressed Successfully! " +
+                    "Path:C:\\User:\\Public:\\Documents");    
                     }
                     catch (System.IndexOutOfRangeException)  
                     {
