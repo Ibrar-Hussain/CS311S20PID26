@@ -233,9 +233,14 @@ namespace Project_UI
                     }
 
                 }
-                File.AppendAllText("C:\\Users\\Public\\Documents\\CF.txt", R);
-                R = "";
+                if (R.Length >= 30000)
+                {
+                    File.AppendAllText("C:\\Users\\Public\\Documents\\CF.txt", R);
+                    R = "";
+                }
             }
+            File.AppendAllText("C:\\Users\\Public\\Documents\\CF.txt", R);
+            R = "";
         }
         public static void Decompress(string path2,string path3)
         {
